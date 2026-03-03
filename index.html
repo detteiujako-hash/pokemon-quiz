@@ -677,6 +677,7 @@ let current = 0;
 let score = 0;
 let answered = false;
 const QUIZ_COUNT = 10;
+const lastUsed = { pokemon: [], type: [], guess: [] };
 
 function shuffle(arr) {
   const a = [...arr];
@@ -685,6 +686,16 @@ function shuffle(arr) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+function pickAvoidingLast(pool, count, modeKey) {
+  const prev = lastUsed[modeKey];
+  const fresh = pool.filter((_, i) => !prev.includes(i));
+  const used = pool.filter((_, i) => prev.includes(i));
+  const ordered = shuffle(fresh).concat(shuffle(used));
+  const picked = ordered.slice(0, count);
+  lastUsed[modeKey] = picked.map(q => pool.indexOf(q));
+  return picked;
 }
 
 function showScreen(id) {
@@ -698,7 +709,7 @@ function goHome() {
 
 /* ===== Build type quiz questions ===== */
 function buildTypeQuizzes() {
-  const picked = shuffle(typeMatchups).slice(0, QUIZ_COUNT);
+  const picked = pickAvoidingLast(typeMatchups, QUIZ_COUNT, 'type');
   return picked.map(m => {
     const swap = Math.random() < 0.5;
     const typeA = swap ? m.loser : m.winner;
@@ -713,7 +724,7 @@ function buildTypeQuizzes() {
 
 /* ===== Build type guess questions ===== */
 function buildTypeGuessQuizzes() {
-  const picked = shuffle(typeGuessQuizzes).slice(0, QUIZ_COUNT);
+  const picked = pickAvoidingLast(typeGuessQuizzes, QUIZ_COUNT, 'guess');
   return picked.map(q => {
     const allChoices = shuffle([q.answer, ...q.wrongs]);
     return {
@@ -734,7 +745,7 @@ function startQuiz(mode) {
   score = 0;
 
   if (mode === 'pokemon') {
-    quizzes = shuffle(pokemonQuizzes).slice(0, QUIZ_COUNT);
+    quizzes = pickAvoidingLast(pokemonQuizzes, QUIZ_COUNT, 'pokemon');
   } else if (mode === 'type') {
     quizzes = buildTypeQuizzes();
   } else {
