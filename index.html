@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ポケモンクイズ">
+<title>ポケモンクイズ</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: -apple-system, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 20px;
+    padding-top: env(safe-area-inset-top, 20px);
+    padding-bottom: env(safe-area-inset-bottom, 20px);
+    animation: fadeIn 0.4s ease;
+  }
+  .screen.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.08); }
+    70% { transform: scale(0.95); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-12px); }
+    40% { transform: translateX(12px); }
+    60% { transform: translateX(-8px); }
+    80% { transform: translateX(8px); }
+  }
+
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes confetti-fall {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0.3; }
+  }
+
+  /* ===== Start Screen ===== */
+  .start-title {
+    font-size: 2.4em;
+    color: #fff;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+    margin-bottom: 8px;
+    animation: bounceIn 0.8s ease;
+  }
+  .start-subtitle {
+    font-size: 1.1em;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 30px;
+  }
+  .start-pokemon {
+    font-size: 5em;
+    animation: float 2.5s ease-in-out infinite;
+    margin-bottom: 30px;
+  }
+  .start-btn {
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    border: none;
+    border-radius: 50px;
+    padding: 18px 60px;
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #5a3e1b;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    transition: transform 0.15s;
+  }
+  .start-btn:active { transform: scale(0.95); }
+
+  /* ===== Quiz Screen ===== */
+  .quiz-header {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 16px;
+  }
+  .progress-bar-bg {
+    width: 100%;
+    height: 12px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f6d365, #fda085);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+  }
+  .quiz-count {
+    color: rgba(255,255,255,0.9);
+    font-size: 0.95em;
+    margin-top: 6px;
+    text-align: right;
+  }
+
+  .quiz-card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    text-align: center;
+    animation: bounceIn 0.5s ease;
+  }
+  .quiz-emoji {
+    font-size: 3.2em;
+    margin-bottom: 12px;
+  }
+  .quiz-question {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .choice-btn {
+    background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+    border: 3px solid transparent;
+    border-radius: 16px;
+    padding: 14px 10px;
+    font-size: 1.15em;
+    font-weight: 600;
+    color: #4338ca;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .choice-btn:active { transform: scale(0.95); }
+  .choice-btn.correct {
+    background: linear-gradient(135deg, #bbf7d0, #86efac);
+    border-color: #22c55e;
+    color: #166534;
+    animation: pop 0.4s ease;
+  }
+  .choice-btn.wrong {
+    background: linear-gradient(135deg, #fecaca, #fca5a5);
+    border-color: #ef4444;
+    color: #991b1b;
+    animation: shake 0.5s ease;
+  }
+  .choice-btn:disabled { cursor: default; opacity: 0.7; }
+  .choice-btn.correct:disabled { opacity: 1; }
+
+  /* ===== Feedback ===== */
+  .feedback {
+    margin-top: 16px;
+    font-size: 1.5em;
+    font-weight: 700;
+    min-height: 1.8em;
+  }
+  .feedback.correct-text { color: #22c55e; }
+  .feedback.wrong-text { color: #ef4444; }
+
+  /* ===== Result Screen ===== */
+  .result-card {
+    background: #fff;
+    border-radius: 28px;
+    padding: 36px 28px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    text-align: center;
+    animation: bounceIn 0.6s ease;
+    position: relative;
+    z-index: 2;
+  }
+  .result-emoji {
+    font-size: 4em;
+    margin-bottom: 10px;
+  }
+  .result-title {
+    font-size: 1.8em;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 6px;
+  }
+  .result-score {
+    font-size: 3.2em;
+    font-weight: 800;
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 10px 0;
+  }
+  .result-label {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #666;
+    margin-bottom: 8px;
+  }
+  .result-msg {
+    font-size: 1.1em;
+    color: #888;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .retry-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 50px;
+    padding: 16px 50px;
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    transition: transform 0.15s;
+  }
+  .retry-btn:active { transform: scale(0.95); }
+
+  /* ===== Confetti ===== */
+  .confetti-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 1; overflow: hidden;
+  }
+  .confetti {
+    position: absolute;
+    width: 12px; height: 12px;
+    border-radius: 3px;
+    animation: confetti-fall linear forwards;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Start Screen ===== -->
+<div id="screen-start" class="screen active">
+  <div class="start-pokemon">⚡</div>
+  <div class="start-title">ポケモンクイズ</div>
+  <div class="start-subtitle">5さいから あそべるよ！</div>
+  <button class="start-btn" onclick="startQuiz()">はじめる！</button>
+</div>
+
+<!-- ===== Quiz Screen ===== -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-header">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+    <div class="quiz-count" id="quiz-count"></div>
+  </div>
+  <div class="quiz-card" id="quiz-card">
+    <div class="quiz-emoji" id="quiz-emoji"></div>
+    <div class="quiz-question" id="quiz-question"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+</div>
+
+<!-- ===== Result Screen ===== -->
+<div id="screen-result" class="screen">
+  <div class="confetti-container" id="confetti-container"></div>
+  <div class="result-card">
+    <div class="result-emoji" id="result-emoji"></div>
+    <div class="result-title">けっか はっぴょう！</div>
+    <div class="result-score" id="result-score"></div>
+    <div class="result-label" id="result-label"></div>
+    <div class="result-msg" id="result-msg"></div>
+    <button class="retry-btn" onclick="startQuiz()">もういちど！</button>
+  </div>
+</div>
+
+<script>
+const allQuizzes = [
+  {
+    emoji: "⚡",
+    question: "きいろくて ほっぺが あかい\nでんきタイプの ポケモンは？",
+    choices: ["ピカチュウ", "ライチュウ", "エモンガ", "デデンネ"],
+    answer: 0
+  },
+  {
+    emoji: "🌱",
+    question: "せなかに たねがある\nくさタイプの ポケモンは？",
+    choices: ["チコリータ", "フシギダネ", "ナエトル", "キモリ"],
+    answer: 1
+  },
+  {
+    emoji: "🔥",
+    question: "しっぽに ひがついている\nほのおタイプの ポケモンは？",
+    choices: ["アチャモ", "ポカブ", "ヒトカゲ", "ヒノアラシ"],
+    answer: 2
+  },
+  {
+    emoji: "💧",
+    question: "カメの かたちをした\nみずタイプの ポケモンは？",
+    choices: ["カメックス", "ゼニガメ", "カメテテ", "ポッチャマ"],
+    answer: 1
+  },
+  {
+    emoji: "🎤",
+    question: "ピンクで まるくて\nうたうと ねむくなる ポケモンは？",
+    choices: ["ピッピ", "ププリン", "プリン", "ラッキー"],
+    answer: 2
+  },
+  {
+    emoji: "😴",
+    question: "とっても おおきくて\nいつも ねている ポケモンは？",
+    choices: ["ゴンベ", "ケッキング", "カビゴン", "ヤドン"],
+    answer: 2
+  },
+  {
+    emoji: "🐱",
+    question: "ロケットだんの\nにほんごを しゃべる ポケモンは？",
+    choices: ["ニャース", "ニャオハ", "エネコ", "ニャルマー"],
+    answer: 0
+  },
+  {
+    emoji: "🧢",
+    question: "ピカチュウの パートナーの\nおとこのこの なまえは？",
+    choices: ["タケシ", "ゴウ", "サトシ", "シゲル"],
+    answer: 2
+  },
+  {
+    emoji: "🩷",
+    question: "どんな ポケモンにも\nへんしんできる ポケモンは？",
+    choices: ["ミュウ", "メタモン", "ドーブル", "ゾロア"],
+    answer: 1
+  },
+  {
+    emoji: "🌟",
+    question: "ピカチュウが しんかすると\nなにに なる？",
+    choices: ["ピチュー", "エモンガ", "デデンネ", "ライチュウ"],
+    answer: 3
+  },
+  {
+    emoji: "🎈",
+    question: "そらを とぶ まるい\nピンクの ポケモンは？",
+    choices: ["プリン", "プクリン", "ピッピ", "ミュウ"],
+    answer: 3
+  },
+  {
+    emoji: "👻",
+    question: "したを べろっと だして\nおどかすのが すきな ポケモンは？",
+    choices: ["ムウマ", "ゲンガー", "ゴース", "ヨマワル"],
+    answer: 1
+  },
+  {
+    emoji: "🦋",
+    question: "キャタピーが さいごに\nしんかすると なにに なる？",
+    choices: ["モルフォン", "バタフリー", "アゲハント", "ビビヨン"],
+    answer: 1
+  },
+  {
+    emoji: "🏊",
+    question: "あかい からだの おおきな\nさかなの ポケモンは？",
+    choices: ["トサキント", "コイキング", "キングラー", "アズマオウ"],
+    answer: 1
+  },
+  {
+    emoji: "💪",
+    question: "4ほんの うでで\nかいりきの ポケモンは？",
+    choices: ["ゴーリキー", "カイリキー", "エビワラー", "ルカリオ"],
+    answer: 1
+  }
+];
+
+let quizzes = [];
+let current = 0;
+let score = 0;
+let answered = false;
+const QUIZ_COUNT = 10;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startQuiz() {
+  quizzes = shuffle(allQuizzes).slice(0, QUIZ_COUNT);
+  current = 0;
+  score = 0;
+  showScreen('screen-quiz');
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  const q = quizzes[current];
+  document.getElementById('quiz-emoji').textContent = q.emoji;
+  document.getElementById('quiz-question').textContent = q.question;
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('progress-fill').style.width = ((current) / QUIZ_COUNT * 100) + '%';
+  document.getElementById('quiz-count').textContent = (current + 1) + ' / ' + QUIZ_COUNT;
+
+  // Re-create card animation
+  const card = document.getElementById('quiz-card');
+  card.style.animation = 'none';
+  card.offsetHeight; // reflow
+  card.style.animation = 'bounceIn 0.5s ease';
+
+  const choicesDiv = document.getElementById('choices');
+  choicesDiv.innerHTML = '';
+  q.choices.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = c;
+    btn.onclick = () => selectAnswer(i, btn);
+    choicesDiv.appendChild(btn);
+  });
+}
+
+function selectAnswer(idx, btn) {
+  if (answered) return;
+  answered = true;
+
+  const q = quizzes[current];
+  const buttons = document.querySelectorAll('.choice-btn');
+  const fb = document.getElementById('feedback');
+
+  buttons.forEach(b => b.disabled = true);
+
+  if (idx === q.answer) {
+    btn.classList.add('correct');
+    fb.textContent = '⭕ せいかい！すごい！';
+    fb.className = 'feedback correct-text';
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    buttons[q.answer].classList.add('correct');
+    fb.textContent = '❌ ざんねん… こたえは「' + q.choices[q.answer] + '」';
+    fb.className = 'feedback wrong-text';
+  }
+
+  document.getElementById('progress-fill').style.width = ((current + 1) / QUIZ_COUNT * 100) + '%';
+
+  setTimeout(() => {
+    current++;
+    if (current < QUIZ_COUNT) {
+      showQuestion();
+    } else {
+      showResult();
+    }
+  }, 1600);
+}
+
+function showResult() {
+  showScreen('screen-result');
+
+  document.getElementById('result-score').textContent = score + ' / ' + QUIZ_COUNT;
+
+  let emoji, label, msg;
+  if (score === QUIZ_COUNT) {
+    emoji = '👑'; label = 'ポケモンはかせ！'; msg = 'パーフェクト！\nきみは ポケモンマスターだ！';
+  } else if (score >= 8) {
+    emoji = '🌟'; label = 'すごーい！'; msg = 'ポケモンに とっても くわしいね！';
+  } else if (score >= 5) {
+    emoji = '😊'; label = 'がんばったね！'; msg = 'もうすこしで ポケモンはかせ！';
+  } else {
+    emoji = '💪'; label = 'つぎは がんばろう！'; msg = 'ポケモンを もっと みてみよう！';
+  }
+
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-label').textContent = label;
+  document.getElementById('result-msg').textContent = msg;
+
+  if (score >= 5) spawnConfetti();
+}
+
+function spawnConfetti() {
+  const container = document.getElementById('confetti-container');
+  container.innerHTML = '';
+  const colors = ['#f43f5e','#f59e0b','#22c55e','#3b82f6','#a855f7','#ec4899'];
+  for (let i = 0; i < 60; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + '%';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.width = (8 + Math.random() * 10) + 'px';
+    c.style.height = (8 + Math.random() * 10) + 'px';
+    c.style.animationDuration = (2 + Math.random() * 3) + 's';
+    c.style.animationDelay = Math.random() * 2 + 's';
+    container.appendChild(c);
+  }
+}
+</script>
+</body>
+</html>
