@@ -485,6 +485,24 @@ const pokemonQuizzes = [
   { emoji:"🦋", question:"キャタピーが さいごに\nしんかすると なにに なる？", choices:["モルフォン","バタフリー","アゲハント","ビビヨン"], answer:1 },
   { emoji:"🏊", question:"あかい からだの おおきな\nさかなの ポケモンは？", choices:["トサキント","コイキング","キングラー","アズマオウ"], answer:1 },
   { emoji:"💪", question:"4ほんの うでで\nかいりきの ポケモンは？", choices:["ゴーリキー","カイリキー","エビワラー","ルカリオ"], answer:1 },
+  { emoji:"🐉", question:"やさしい こころの\nドラゴンタイプの ポケモンは？", choices:["カイリュー","ガブリアス","ボーマンダ","リザードン"], answer:0 },
+  { emoji:"🌙", question:"つきの ひかりで\nしんかする くろい ポケモンは？", choices:["ヤミラミ","ブラッキー","ゲンガー","アブソル"], answer:1 },
+  { emoji:"🥄", question:"スプーンを もった\nエスパータイプの ポケモンは？", choices:["ユンゲラー","フーディン","スリーパー","バリヤード"], answer:1 },
+  { emoji:"🐢", question:"ゼニガメが さいごに\nしんかすると なにに なる？", choices:["カメール","カメックス","ドダイトス","ラプラス"], answer:1 },
+  { emoji:"🌸", question:"あたまに おおきな はなが\nさいている ポケモンは？", choices:["キレイハナ","ラフレシア","フシギバナ","ロズレイド"], answer:2 },
+  { emoji:"💤", question:"あたまが いつも\nぼーっとしている ポケモンは？", choices:["カビゴン","ナマケロ","ヤドン","コダック"], answer:2 },
+  { emoji:"🎵", question:"3つの あたまで\nうたう とりの ポケモンは？", choices:["ポッポ","ドードリオ","オニスズメ","ネイティオ"], answer:1 },
+  { emoji:"🐍", question:"むらさきいろの\nおおきな ヘビの ポケモンは？", choices:["ハブネーク","アーボック","ノコッチ","ジャローダ"], answer:1 },
+  { emoji:"🧲", question:"じしゃくの ちからで\nうかんでいる ポケモンは？", choices:["コイル","レアコイル","ジバコイル","ドータクン"], answer:0 },
+  { emoji:"🦊", question:"きつねの すがたの\nほのおタイプの ポケモンは？", choices:["イーブイ","ロコン","ウインディ","ヘルガー"], answer:1 },
+  { emoji:"🐸", question:"せなかに たねがあって\nカエルみたいな ポケモンは？", choices:["ニョロモ","ゲコガシラ","フシギダネ","グレッグル"], answer:2 },
+  { emoji:"🎃", question:"ハロウィンみたいな\nかぼちゃの ポケモンは？", choices:["バケッチャ","パンプジン","ジュペッタ","ヨマワル"], answer:1 },
+  { emoji:"⭐", question:"イーブイは ぜんぶで\nなんしゅるいに しんかする？", choices:["6しゅるい","7しゅるい","8しゅるい","9しゅるい"], answer:2 },
+  { emoji:"🐟", question:"はねるだけで よわいけど\nしんかすると つよい ポケモンは？", choices:["トサキント","コイキング","ヒンバス","メノクラゲ"], answer:1 },
+  { emoji:"🔮", question:"さいきょうの\nエスパーポケモンは？", choices:["フーディン","ミュウ","ミュウツー","エーフィ"], answer:2 },
+  { emoji:"🐣", question:"トゲトゲの たまごの\nカラに はいっている ポケモンは？", choices:["ラッキー","タマタマ","トゲピー","ピンプク"], answer:2 },
+  { emoji:"🌊", question:"うみの かみさまと\nよばれる ポケモンは？", choices:["カイオーガ","ルギア","ギャラドス","スイクン"], answer:0 },
+  { emoji:"☀️", question:"たいようの ちからで\nたたかう でんせつの ポケモンは？", choices:["ホウオウ","ソルガレオ","グラードン","エンテイ"], answer:2 },
 ];
 
 /* ===== Type Data ===== */
@@ -586,69 +604,69 @@ const typeMatchups = [
 /* ===== Type Guess Quiz Data ===== */
 const typeGuessQuizzes = [
   /* ほのお */
-  { pokemon: "ヒトカゲ",     emoji: "🔥", answer: "ほのお",   wrongs: ["みず","くさ"] },
-  { pokemon: "リザードン",   emoji: "🔥", answer: "ほのお",   wrongs: ["ドラゴン","ひこう"] },
-  { pokemon: "ロコン",       emoji: "🔥", answer: "ほのお",   wrongs: ["ノーマル","フェアリー"] },
-  { pokemon: "ブースター",   emoji: "🔥", answer: "ほのお",   wrongs: ["でんき","ノーマル"] },
+  { pokemon: "ヒトカゲ",     emoji: "🔥", answer: "ほのお",   wrongs: ["みず","くさ"],           hint: "しっぽに ひが ついてるよ！" },
+  { pokemon: "リザードン",   emoji: "🔥", answer: "ほのお",   wrongs: ["ドラゴン","ひこう"],     hint: "くちから ひを はくよ！" },
+  { pokemon: "ロコン",       emoji: "🔥", answer: "ほのお",   wrongs: ["ノーマル","フェアリー"], hint: "6ぽんの しっぽが もえてるよ！" },
+  { pokemon: "ブースター",   emoji: "🔥", answer: "ほのお",   wrongs: ["でんき","ノーマル"],     hint: "イーブイが ほのおの いしで しんか！" },
   /* みず */
-  { pokemon: "ゼニガメ",     emoji: "💧", answer: "みず",     wrongs: ["こおり","ノーマル"] },
-  { pokemon: "コダック",     emoji: "💧", answer: "みず",     wrongs: ["エスパー","ノーマル"] },
-  { pokemon: "ラプラス",     emoji: "💧", answer: "みず",     wrongs: ["こおり","ドラゴン"] },
-  { pokemon: "シャワーズ",   emoji: "💧", answer: "みず",     wrongs: ["こおり","フェアリー"] },
+  { pokemon: "ゼニガメ",     emoji: "💧", answer: "みず",     wrongs: ["こおり","ノーマル"],     hint: "カメの くちから みずを だすよ！" },
+  { pokemon: "コダック",     emoji: "💧", answer: "みず",     wrongs: ["エスパー","ノーマル"],   hint: "かわや みずうみに いるよ！" },
+  { pokemon: "ラプラス",     emoji: "💧", answer: "みず",     wrongs: ["こおり","ドラゴン"],     hint: "うみを およいで ひとを はこぶよ！" },
+  { pokemon: "シャワーズ",   emoji: "💧", answer: "みず",     wrongs: ["こおり","フェアリー"],   hint: "イーブイが みずの いしで しんか！" },
   /* くさ */
-  { pokemon: "フシギダネ",   emoji: "🌿", answer: "くさ",     wrongs: ["どく","むし"] },
-  { pokemon: "ナゾノクサ",   emoji: "🌿", answer: "くさ",     wrongs: ["どく","フェアリー"] },
-  { pokemon: "リーフィア",   emoji: "🌿", answer: "くさ",     wrongs: ["ノーマル","じめん"] },
+  { pokemon: "フシギダネ",   emoji: "🌿", answer: "くさ",     wrongs: ["どく","むし"],           hint: "せなかに たねが あるよ！" },
+  { pokemon: "ナゾノクサ",   emoji: "🌿", answer: "くさ",     wrongs: ["どく","フェアリー"],     hint: "あたまに はっぱが はえてるよ！" },
+  { pokemon: "リーフィア",   emoji: "🌿", answer: "くさ",     wrongs: ["ノーマル","じめん"],     hint: "からだが はっぱで できてるよ！" },
   /* でんき */
-  { pokemon: "ピカチュウ",   emoji: "⚡", answer: "でんき",   wrongs: ["ノーマル","フェアリー"] },
-  { pokemon: "サンダース",   emoji: "⚡", answer: "でんき",   wrongs: ["ノーマル","ひこう"] },
-  { pokemon: "デデンネ",     emoji: "⚡", answer: "でんき",   wrongs: ["フェアリー","ノーマル"] },
+  { pokemon: "ピカチュウ",   emoji: "⚡", answer: "でんき",   wrongs: ["ノーマル","フェアリー"], hint: "ほっぺから ビリビリ でんきが でるよ！" },
+  { pokemon: "サンダース",   emoji: "⚡", answer: "でんき",   wrongs: ["ノーマル","ひこう"],     hint: "イーブイが かみなりの いしで しんか！" },
+  { pokemon: "デデンネ",     emoji: "⚡", answer: "でんき",   wrongs: ["フェアリー","ノーマル"], hint: "ひげから でんきを だすよ！" },
   /* こおり */
-  { pokemon: "ラプラス",     emoji: "❄️", answer: "こおり",   wrongs: ["みず","ドラゴン"] },
-  { pokemon: "グレイシア",   emoji: "❄️", answer: "こおり",   wrongs: ["みず","フェアリー"] },
-  { pokemon: "ルージュラ",   emoji: "❄️", answer: "こおり",   wrongs: ["エスパー","フェアリー"] },
+  { pokemon: "ラプラス",     emoji: "❄️", answer: "こおり",   wrongs: ["みず","ドラゴン"],       hint: "こおりの わざが とくいだよ！" },
+  { pokemon: "グレイシア",   emoji: "❄️", answer: "こおり",   wrongs: ["みず","フェアリー"],     hint: "つめたい いわの ちかくで しんか！" },
+  { pokemon: "ルージュラ",   emoji: "❄️", answer: "こおり",   wrongs: ["エスパー","フェアリー"], hint: "つめたい いきを ふくよ！" },
   /* かくとう */
-  { pokemon: "カイリキー",   emoji: "🥊", answer: "かくとう", wrongs: ["ノーマル","いわ"] },
-  { pokemon: "ルカリオ",     emoji: "🥊", answer: "かくとう", wrongs: ["はがね","あく"] },
+  { pokemon: "カイリキー",   emoji: "🥊", answer: "かくとう", wrongs: ["ノーマル","いわ"],       hint: "4ほんの うでで たたかうよ！" },
+  { pokemon: "ルカリオ",     emoji: "🥊", answer: "かくとう", wrongs: ["はがね","あく"],         hint: "はどうの ちからで たたかうよ！" },
   /* どく */
-  { pokemon: "ベトベトン",   emoji: "☠️", answer: "どく",     wrongs: ["あく","みず"] },
-  { pokemon: "ゲンガー",     emoji: "☠️", answer: "どく",     wrongs: ["ゴースト","あく"] },
+  { pokemon: "ベトベトン",   emoji: "☠️", answer: "どく",     wrongs: ["あく","みず"],           hint: "からだが どくの ヘドロでできてるよ！" },
+  { pokemon: "ゲンガー",     emoji: "☠️", answer: "どく",     wrongs: ["ゴースト","あく"],       hint: "どくの ガスを だすよ！" },
   /* じめん */
-  { pokemon: "ディグダ",     emoji: "🏔️", answer: "じめん",   wrongs: ["いわ","ノーマル"] },
-  { pokemon: "サンド",       emoji: "🏔️", answer: "じめん",   wrongs: ["いわ","ノーマル"] },
+  { pokemon: "ディグダ",     emoji: "🏔️", answer: "じめん",   wrongs: ["いわ","ノーマル"],       hint: "つちの なかを ほるのが とくい！" },
+  { pokemon: "サンド",       emoji: "🏔️", answer: "じめん",   wrongs: ["いわ","ノーマル"],       hint: "さばくの すなに すんでるよ！" },
   /* ひこう */
-  { pokemon: "ピジョン",     emoji: "🕊️", answer: "ひこう",   wrongs: ["ノーマル","かくとう"] },
-  { pokemon: "フリーザー",   emoji: "🕊️", answer: "ひこう",   wrongs: ["こおり","みず"] },
+  { pokemon: "ピジョン",     emoji: "🕊️", answer: "ひこう",   wrongs: ["ノーマル","かくとう"],   hint: "おおきな つばさで そらを とぶよ！" },
+  { pokemon: "フリーザー",   emoji: "🕊️", answer: "ひこう",   wrongs: ["こおり","みず"],         hint: "つばさで そらを とぶ でんせつのとり！" },
   /* エスパー */
-  { pokemon: "ミュウツー",   emoji: "🔮", answer: "エスパー", wrongs: ["ドラゴン","あく"] },
-  { pokemon: "エーフィ",     emoji: "🔮", answer: "エスパー", wrongs: ["フェアリー","ノーマル"] },
-  { pokemon: "フーディン",   emoji: "🔮", answer: "エスパー", wrongs: ["ノーマル","ゴースト"] },
+  { pokemon: "ミュウツー",   emoji: "🔮", answer: "エスパー", wrongs: ["ドラゴン","あく"],       hint: "すごい ねんりきを つかうよ！" },
+  { pokemon: "エーフィ",     emoji: "🔮", answer: "エスパー", wrongs: ["フェアリー","ノーマル"], hint: "たいようの ひかりで しんかしたよ！" },
+  { pokemon: "フーディン",   emoji: "🔮", answer: "エスパー", wrongs: ["ノーマル","ゴースト"],   hint: "スプーンを まげる ちからがあるよ！" },
   /* むし */
-  { pokemon: "バタフリー",   emoji: "🐛", answer: "むし",     wrongs: ["ひこう","フェアリー"] },
-  { pokemon: "ストライク",   emoji: "🐛", answer: "むし",     wrongs: ["ひこう","くさ"] },
+  { pokemon: "バタフリー",   emoji: "🐛", answer: "むし",     wrongs: ["ひこう","フェアリー"],   hint: "キャタピーが しんかした ちょうちょ！" },
+  { pokemon: "ストライク",   emoji: "🐛", answer: "むし",     wrongs: ["ひこう","くさ"],         hint: "カマで きる かまきりの ポケモン！" },
   /* いわ */
-  { pokemon: "イワーク",     emoji: "🪨", answer: "いわ",     wrongs: ["じめん","はがね"] },
-  { pokemon: "イシツブテ",   emoji: "🪨", answer: "いわ",     wrongs: ["じめん","ノーマル"] },
+  { pokemon: "イワーク",     emoji: "🪨", answer: "いわ",     wrongs: ["じめん","はがね"],       hint: "おおきな いわの ヘビみたい！" },
+  { pokemon: "イシツブテ",   emoji: "🪨", answer: "いわ",     wrongs: ["じめん","ノーマル"],     hint: "いしの からだで うでがあるよ！" },
   /* ゴースト */
-  { pokemon: "ゲンガー",     emoji: "👻", answer: "ゴースト", wrongs: ["どく","あく"] },
-  { pokemon: "ミミッキュ",   emoji: "👻", answer: "ゴースト", wrongs: ["フェアリー","ノーマル"] },
+  { pokemon: "ゲンガー",     emoji: "👻", answer: "ゴースト", wrongs: ["どく","あく"],           hint: "かげに かくれる おばけだよ！" },
+  { pokemon: "ミミッキュ",   emoji: "👻", answer: "ゴースト", wrongs: ["フェアリー","ノーマル"], hint: "ぬのを かぶった おばけだよ！" },
   /* ドラゴン */
-  { pokemon: "カイリュー",   emoji: "🐉", answer: "ドラゴン", wrongs: ["ひこう","みず"] },
-  { pokemon: "ガブリアス",   emoji: "🐉", answer: "ドラゴン", wrongs: ["じめん","あく"] },
+  { pokemon: "カイリュー",   emoji: "🐉", answer: "ドラゴン", wrongs: ["ひこう","みず"],         hint: "やさしい ドラゴンで そらを とぶよ！" },
+  { pokemon: "ガブリアス",   emoji: "🐉", answer: "ドラゴン", wrongs: ["じめん","あく"],         hint: "つよくて はやい ドラゴンだよ！" },
   /* あく */
-  { pokemon: "ブラッキー",   emoji: "🌑", answer: "あく",     wrongs: ["ノーマル","ゴースト"] },
-  { pokemon: "アブソル",     emoji: "🌑", answer: "あく",     wrongs: ["ノーマル","こおり"] },
+  { pokemon: "ブラッキー",   emoji: "🌑", answer: "あく",     wrongs: ["ノーマル","ゴースト"],   hint: "よるの つきの ひかりで しんかしたよ！" },
+  { pokemon: "アブソル",     emoji: "🌑", answer: "あく",     wrongs: ["ノーマル","こおり"],     hint: "わざわいを よちする くらい ポケモン！" },
   /* はがね */
-  { pokemon: "ハガネール",   emoji: "🛡️", answer: "はがね",   wrongs: ["いわ","じめん"] },
-  { pokemon: "ルカリオ",     emoji: "🛡️", answer: "はがね",   wrongs: ["かくとう","ノーマル"] },
+  { pokemon: "ハガネール",   emoji: "🛡️", answer: "はがね",   wrongs: ["いわ","じめん"],         hint: "からだが かたい てつで できてるよ！" },
+  { pokemon: "ルカリオ",     emoji: "🛡️", answer: "はがね",   wrongs: ["かくとう","ノーマル"],   hint: "てつの からだを もっているよ！" },
   /* フェアリー */
-  { pokemon: "ピッピ",       emoji: "🧚", answer: "フェアリー", wrongs: ["ノーマル","エスパー"] },
-  { pokemon: "ニンフィア",   emoji: "🧚", answer: "フェアリー", wrongs: ["ノーマル","エスパー"] },
-  { pokemon: "プリン",       emoji: "🧚", answer: "フェアリー", wrongs: ["ノーマル","エスパー"] },
+  { pokemon: "ピッピ",       emoji: "🧚", answer: "フェアリー", wrongs: ["ノーマル","エスパー"], hint: "つきの ひかりが だいすき！" },
+  { pokemon: "ニンフィア",   emoji: "🧚", answer: "フェアリー", wrongs: ["ノーマル","エスパー"], hint: "リボンみたいな からだが かわいい！" },
+  { pokemon: "プリン",       emoji: "🧚", answer: "フェアリー", wrongs: ["ノーマル","エスパー"], hint: "うたを うたうのが とくい！" },
   /* ノーマル */
-  { pokemon: "カビゴン",     emoji: "⭐", answer: "ノーマル", wrongs: ["かくとう","じめん"] },
-  { pokemon: "イーブイ",     emoji: "⭐", answer: "ノーマル", wrongs: ["フェアリー","くさ"] },
-  { pokemon: "プクリン",     emoji: "⭐", answer: "ノーマル", wrongs: ["フェアリー","エスパー"] },
+  { pokemon: "カビゴン",     emoji: "⭐", answer: "ノーマル", wrongs: ["かくとう","じめん"],     hint: "たべて ねるだけの ポケモン！" },
+  { pokemon: "イーブイ",     emoji: "⭐", answer: "ノーマル", wrongs: ["フェアリー","くさ"],     hint: "いろんな タイプに しんかできるよ！" },
+  { pokemon: "プクリン",     emoji: "⭐", answer: "ノーマル", wrongs: ["フェアリー","エスパー"], hint: "ふうせんみたいに ふくらむよ！" },
 ];
 
 /* ===== State ===== */
@@ -702,7 +720,8 @@ function buildTypeGuessQuizzes() {
       pokemon: q.pokemon,
       emoji: q.emoji,
       choices: allChoices,
-      answer: allChoices.indexOf(q.answer)
+      answer: allChoices.indexOf(q.answer),
+      hint: q.hint
     };
   });
 }
@@ -814,6 +833,14 @@ function showGuessQuestion() {
 
   const container = document.getElementById('choices-container');
   container.innerHTML = '';
+
+  if (hintOn && q.hint) {
+    const bubble = document.createElement('div');
+    bubble.className = 'hint-bubble';
+    bubble.textContent = '💡 ' + q.hint;
+    container.appendChild(bubble);
+  }
+
   const div = document.createElement('div');
   div.className = 'type-choices type-choices-3';
 
