@@ -118,6 +118,10 @@
     background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
     color: #4a3560;
   }
+  .mode-btn-guess {
+    background: linear-gradient(135deg, #c3fae8 0%, #b2f5ea 50%, #81e6d9 100%);
+    color: #234e52;
+  }
 
   /* ===== Quiz Screen ===== */
   .quiz-header {
@@ -218,6 +222,14 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
+  }
+  .type-choices-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .type-choices-3 .type-btn {
+    padding: 16px 6px;
+    font-size: 1em;
   }
   .type-btn {
     border: 4px solid transparent;
@@ -397,6 +409,13 @@
         <span class="mode-btn-desc">ポケモンの なまえを あてよう！</span>
       </span>
     </button>
+    <button class="mode-btn mode-btn-guess" onclick="startQuiz('guess')">
+      <span class="mode-btn-icon">❓</span>
+      <span class="mode-btn-text">
+        <span class="mode-btn-title">タイプ当て</span>
+        <span class="mode-btn-desc">このポケモンは なにタイプ？ 3たく！</span>
+      </span>
+    </button>
     <button class="mode-btn mode-btn-type" onclick="startQuiz('type')">
       <span class="mode-btn-icon">⚔️</span>
       <span class="mode-btn-text">
@@ -564,6 +583,74 @@ const typeMatchups = [
   { winner: "フェアリー", loser: "あく",     hint: "フェアリーの ひかりで あくに かつ！" },
 ];
 
+/* ===== Type Guess Quiz Data ===== */
+const typeGuessQuizzes = [
+  /* ほのお */
+  { pokemon: "ヒトカゲ",     emoji: "🔥", answer: "ほのお",   wrongs: ["みず","くさ"] },
+  { pokemon: "リザードン",   emoji: "🔥", answer: "ほのお",   wrongs: ["ドラゴン","ひこう"] },
+  { pokemon: "ロコン",       emoji: "🔥", answer: "ほのお",   wrongs: ["ノーマル","フェアリー"] },
+  { pokemon: "ブースター",   emoji: "🔥", answer: "ほのお",   wrongs: ["でんき","ノーマル"] },
+  /* みず */
+  { pokemon: "ゼニガメ",     emoji: "💧", answer: "みず",     wrongs: ["こおり","ノーマル"] },
+  { pokemon: "コダック",     emoji: "💧", answer: "みず",     wrongs: ["エスパー","ノーマル"] },
+  { pokemon: "ラプラス",     emoji: "💧", answer: "みず",     wrongs: ["こおり","ドラゴン"] },
+  { pokemon: "シャワーズ",   emoji: "💧", answer: "みず",     wrongs: ["こおり","フェアリー"] },
+  /* くさ */
+  { pokemon: "フシギダネ",   emoji: "🌿", answer: "くさ",     wrongs: ["どく","むし"] },
+  { pokemon: "ナゾノクサ",   emoji: "🌿", answer: "くさ",     wrongs: ["どく","フェアリー"] },
+  { pokemon: "リーフィア",   emoji: "🌿", answer: "くさ",     wrongs: ["ノーマル","じめん"] },
+  /* でんき */
+  { pokemon: "ピカチュウ",   emoji: "⚡", answer: "でんき",   wrongs: ["ノーマル","フェアリー"] },
+  { pokemon: "サンダース",   emoji: "⚡", answer: "でんき",   wrongs: ["ノーマル","ひこう"] },
+  { pokemon: "デデンネ",     emoji: "⚡", answer: "でんき",   wrongs: ["フェアリー","ノーマル"] },
+  /* こおり */
+  { pokemon: "ラプラス",     emoji: "❄️", answer: "こおり",   wrongs: ["みず","ドラゴン"] },
+  { pokemon: "グレイシア",   emoji: "❄️", answer: "こおり",   wrongs: ["みず","フェアリー"] },
+  { pokemon: "ルージュラ",   emoji: "❄️", answer: "こおり",   wrongs: ["エスパー","フェアリー"] },
+  /* かくとう */
+  { pokemon: "カイリキー",   emoji: "🥊", answer: "かくとう", wrongs: ["ノーマル","いわ"] },
+  { pokemon: "ルカリオ",     emoji: "🥊", answer: "かくとう", wrongs: ["はがね","あく"] },
+  /* どく */
+  { pokemon: "ベトベトン",   emoji: "☠️", answer: "どく",     wrongs: ["あく","みず"] },
+  { pokemon: "ゲンガー",     emoji: "☠️", answer: "どく",     wrongs: ["ゴースト","あく"] },
+  /* じめん */
+  { pokemon: "ディグダ",     emoji: "🏔️", answer: "じめん",   wrongs: ["いわ","ノーマル"] },
+  { pokemon: "サンド",       emoji: "🏔️", answer: "じめん",   wrongs: ["いわ","ノーマル"] },
+  /* ひこう */
+  { pokemon: "ピジョン",     emoji: "🕊️", answer: "ひこう",   wrongs: ["ノーマル","かくとう"] },
+  { pokemon: "フリーザー",   emoji: "🕊️", answer: "ひこう",   wrongs: ["こおり","みず"] },
+  /* エスパー */
+  { pokemon: "ミュウツー",   emoji: "🔮", answer: "エスパー", wrongs: ["ドラゴン","あく"] },
+  { pokemon: "エーフィ",     emoji: "🔮", answer: "エスパー", wrongs: ["フェアリー","ノーマル"] },
+  { pokemon: "フーディン",   emoji: "🔮", answer: "エスパー", wrongs: ["ノーマル","ゴースト"] },
+  /* むし */
+  { pokemon: "バタフリー",   emoji: "🐛", answer: "むし",     wrongs: ["ひこう","フェアリー"] },
+  { pokemon: "ストライク",   emoji: "🐛", answer: "むし",     wrongs: ["ひこう","くさ"] },
+  /* いわ */
+  { pokemon: "イワーク",     emoji: "🪨", answer: "いわ",     wrongs: ["じめん","はがね"] },
+  { pokemon: "イシツブテ",   emoji: "🪨", answer: "いわ",     wrongs: ["じめん","ノーマル"] },
+  /* ゴースト */
+  { pokemon: "ゲンガー",     emoji: "👻", answer: "ゴースト", wrongs: ["どく","あく"] },
+  { pokemon: "ミミッキュ",   emoji: "👻", answer: "ゴースト", wrongs: ["フェアリー","ノーマル"] },
+  /* ドラゴン */
+  { pokemon: "カイリュー",   emoji: "🐉", answer: "ドラゴン", wrongs: ["ひこう","みず"] },
+  { pokemon: "ガブリアス",   emoji: "🐉", answer: "ドラゴン", wrongs: ["じめん","あく"] },
+  /* あく */
+  { pokemon: "ブラッキー",   emoji: "🌑", answer: "あく",     wrongs: ["ノーマル","ゴースト"] },
+  { pokemon: "アブソル",     emoji: "🌑", answer: "あく",     wrongs: ["ノーマル","こおり"] },
+  /* はがね */
+  { pokemon: "ハガネール",   emoji: "🛡️", answer: "はがね",   wrongs: ["いわ","じめん"] },
+  { pokemon: "ルカリオ",     emoji: "🛡️", answer: "はがね",   wrongs: ["かくとう","ノーマル"] },
+  /* フェアリー */
+  { pokemon: "ピッピ",       emoji: "🧚", answer: "フェアリー", wrongs: ["ノーマル","エスパー"] },
+  { pokemon: "ニンフィア",   emoji: "🧚", answer: "フェアリー", wrongs: ["ノーマル","エスパー"] },
+  { pokemon: "プリン",       emoji: "🧚", answer: "フェアリー", wrongs: ["ノーマル","エスパー"] },
+  /* ノーマル */
+  { pokemon: "カビゴン",     emoji: "⭐", answer: "ノーマル", wrongs: ["かくとう","じめん"] },
+  { pokemon: "イーブイ",     emoji: "⭐", answer: "ノーマル", wrongs: ["フェアリー","くさ"] },
+  { pokemon: "プクリン",     emoji: "⭐", answer: "ノーマル", wrongs: ["フェアリー","エスパー"] },
+];
+
 /* ===== State ===== */
 let gameMode = 'pokemon';
 let hintOn = true;
@@ -606,6 +693,20 @@ function buildTypeQuizzes() {
   });
 }
 
+/* ===== Build type guess questions ===== */
+function buildTypeGuessQuizzes() {
+  const picked = shuffle(typeGuessQuizzes).slice(0, QUIZ_COUNT);
+  return picked.map(q => {
+    const allChoices = shuffle([q.answer, ...q.wrongs]);
+    return {
+      pokemon: q.pokemon,
+      emoji: q.emoji,
+      choices: allChoices,
+      answer: allChoices.indexOf(q.answer)
+    };
+  });
+}
+
 /* ===== Start ===== */
 function startQuiz(mode) {
   gameMode = mode;
@@ -615,8 +716,10 @@ function startQuiz(mode) {
 
   if (mode === 'pokemon') {
     quizzes = shuffle(pokemonQuizzes).slice(0, QUIZ_COUNT);
-  } else {
+  } else if (mode === 'type') {
     quizzes = buildTypeQuizzes();
+  } else {
+    quizzes = buildTypeGuessQuizzes();
   }
 
   showScreen('screen-quiz');
@@ -638,8 +741,10 @@ function showQuestion() {
 
   if (gameMode === 'pokemon') {
     showPokemonQuestion();
-  } else {
+  } else if (gameMode === 'type') {
     showTypeQuestion();
+  } else {
+    showGuessQuestion();
   }
 }
 
@@ -702,6 +807,30 @@ function showTypeQuestion() {
   container.appendChild(div);
 }
 
+function showGuessQuestion() {
+  const q = quizzes[current];
+  document.getElementById('quiz-emoji').textContent = q.emoji;
+  document.getElementById('quiz-question').textContent = q.pokemon + ' は\nなにタイプ？';
+
+  const container = document.getElementById('choices-container');
+  container.innerHTML = '';
+  const div = document.createElement('div');
+  div.className = 'type-choices type-choices-3';
+
+  q.choices.forEach((t, i) => {
+    const info = typeInfo[t];
+    const btn = document.createElement('button');
+    btn.className = 'type-btn';
+    btn.style.background = info.bg;
+    btn.style.color = info.color;
+    btn.innerHTML = '<span class="type-btn-icon">' + info.icon + '</span>' + t + 'タイプ';
+    btn.onclick = () => selectGuessAnswer(i, btn);
+    div.appendChild(btn);
+  });
+
+  container.appendChild(div);
+}
+
 /* ===== Answer Handlers ===== */
 function selectPokemonAnswer(idx, btn) {
   if (answered) return;
@@ -721,6 +850,31 @@ function selectPokemonAnswer(idx, btn) {
     btn.classList.add('wrong');
     buttons[q.answer].classList.add('correct');
     fb.textContent = '❌ こたえは「' + q.choices[q.answer] + '」';
+    fb.className = 'feedback wrong-text';
+  }
+
+  document.getElementById('progress-fill').style.width = ((current + 1) / QUIZ_COUNT * 100) + '%';
+  setTimeout(nextQuestion, 1600);
+}
+
+function selectGuessAnswer(idx, btn) {
+  if (answered) return;
+  answered = true;
+
+  const q = quizzes[current];
+  const buttons = document.querySelectorAll('.type-btn');
+  const fb = document.getElementById('feedback');
+  buttons.forEach(b => b.disabled = true);
+
+  if (idx === q.answer) {
+    btn.classList.add('correct');
+    fb.textContent = '⭕ せいかい！';
+    fb.className = 'feedback correct-text';
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    buttons[q.answer].classList.add('correct');
+    fb.textContent = '❌ ' + q.choices[q.answer] + 'タイプ だよ！';
     fb.className = 'feedback wrong-text';
   }
 
