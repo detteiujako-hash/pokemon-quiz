@@ -125,6 +125,20 @@
     max-width: 400px;
     margin-bottom: 16px;
   }
+  .back-btn {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: transform 0.15s;
+  }
+  .back-btn:active { transform: scale(0.95); }
+
   .progress-bar-bg {
     width: 100%;
     height: 12px;
@@ -404,6 +418,7 @@
 <!-- ===== Quiz Screen ===== -->
 <div id="screen-quiz" class="screen">
   <div class="quiz-header">
+    <button class="back-btn" onclick="goHome()">← もどる</button>
     <div class="progress-bar-bg">
       <div class="progress-bar-fill" id="progress-fill"></div>
     </div>
