@@ -38,14 +38,12 @@
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
-
   @keyframes bounceIn {
     0% { transform: scale(0.3); opacity: 0; }
     50% { transform: scale(1.08); }
     70% { transform: scale(0.95); }
     100% { transform: scale(1); opacity: 1; }
   }
-
   @keyframes shake {
     0%, 100% { transform: translateX(0); }
     20% { transform: translateX(-12px); }
@@ -53,18 +51,15 @@
     60% { transform: translateX(-8px); }
     80% { transform: translateX(8px); }
   }
-
   @keyframes pop {
     0% { transform: scale(1); }
     50% { transform: scale(1.15); }
     100% { transform: scale(1); }
   }
-
   @keyframes float {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
   }
-
   @keyframes confetti-fall {
     0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
     100% { transform: translateY(110vh) rotate(720deg); opacity: 0.3; }
@@ -88,19 +83,41 @@
     animation: float 2.5s ease-in-out infinite;
     margin-bottom: 30px;
   }
-  .start-btn {
-    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+
+  .mode-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 320px;
+  }
+  .mode-btn {
     border: none;
-    border-radius: 50px;
-    padding: 18px 60px;
-    font-size: 1.5em;
+    border-radius: 20px;
+    padding: 20px 24px;
+    font-size: 1.25em;
     font-weight: 700;
-    color: #5a3e1b;
     cursor: pointer;
     box-shadow: 0 8px 25px rgba(0,0,0,0.25);
     transition: transform 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
   }
-  .start-btn:active { transform: scale(0.95); }
+  .mode-btn:active { transform: scale(0.95); }
+  .mode-btn-icon { font-size: 1.6em; }
+  .mode-btn-text { text-align: left; }
+  .mode-btn-title { display: block; font-size: 1em; }
+  .mode-btn-desc { display: block; font-size: 0.6em; font-weight: 500; opacity: 0.7; margin-top: 2px; }
+
+  .mode-btn-pokemon {
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    color: #5a3e1b;
+  }
+  .mode-btn-type {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    color: #4a3560;
+  }
 
   /* ===== Quiz Screen ===== */
   .quiz-header {
@@ -182,6 +199,39 @@
   .choice-btn:disabled { cursor: default; opacity: 0.7; }
   .choice-btn.correct:disabled { opacity: 1; }
 
+  /* ===== Type Battle Buttons ===== */
+  .type-choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .type-btn {
+    border: 4px solid transparent;
+    border-radius: 20px;
+    padding: 20px 10px;
+    font-size: 1.2em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .type-btn:active { transform: scale(0.95); }
+  .type-btn-icon { font-size: 2em; }
+  .type-btn.correct {
+    border-color: #22c55e;
+    box-shadow: 0 0 20px rgba(34,197,94,0.5);
+    animation: pop 0.4s ease;
+  }
+  .type-btn.wrong {
+    border-color: #ef4444;
+    opacity: 0.5;
+    animation: shake 0.5s ease;
+  }
+  .type-btn:disabled { cursor: default; }
+
   /* ===== Feedback ===== */
   .feedback {
     margin-top: 16px;
@@ -205,50 +255,47 @@
     position: relative;
     z-index: 2;
   }
-  .result-emoji {
-    font-size: 4em;
-    margin-bottom: 10px;
-  }
-  .result-title {
-    font-size: 1.8em;
-    font-weight: 800;
-    color: #333;
-    margin-bottom: 6px;
-  }
+  .result-emoji { font-size: 4em; margin-bottom: 10px; }
+  .result-title { font-size: 1.8em; font-weight: 800; color: #333; margin-bottom: 6px; }
   .result-score {
-    font-size: 3.2em;
-    font-weight: 800;
+    font-size: 3.2em; font-weight: 800;
     background: linear-gradient(135deg, #f59e0b, #ef4444);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin: 10px 0;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin: 10px 0;
   }
-  .result-label {
-    font-size: 1.3em;
-    font-weight: 700;
-    color: #666;
-    margin-bottom: 8px;
-  }
-  .result-msg {
-    font-size: 1.1em;
-    color: #888;
-    margin-bottom: 24px;
-    line-height: 1.5;
+  .result-label { font-size: 1.3em; font-weight: 700; color: #666; margin-bottom: 8px; }
+  .result-msg { font-size: 1.1em; color: #888; margin-bottom: 24px; line-height: 1.5; }
+
+  .result-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
   }
   .retry-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    border-radius: 50px;
-    padding: 16px 50px;
-    font-size: 1.3em;
-    font-weight: 700;
-    color: #fff;
-    cursor: pointer;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    border: none; border-radius: 50px; padding: 16px 50px;
+    font-size: 1.3em; font-weight: 700; color: #fff;
+    cursor: pointer; box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     transition: transform 0.15s;
   }
   .retry-btn:active { transform: scale(0.95); }
+  .home-btn {
+    background: none; border: 2px solid rgba(102,126,234,0.4);
+    border-radius: 50px; padding: 10px 30px;
+    font-size: 1em; font-weight: 600; color: #667eea;
+    cursor: pointer; transition: transform 0.15s;
+  }
+  .home-btn:active { transform: scale(0.95); }
+
+  /* ===== VS ===== */
+  .vs-text {
+    font-size: 1.6em;
+    font-weight: 800;
+    color: #ef4444;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 16px;
+  }
 
   /* ===== Confetti ===== */
   .confetti-container {
@@ -256,10 +303,8 @@
     pointer-events: none; z-index: 1; overflow: hidden;
   }
   .confetti {
-    position: absolute;
-    width: 12px; height: 12px;
-    border-radius: 3px;
-    animation: confetti-fall linear forwards;
+    position: absolute; width: 12px; height: 12px;
+    border-radius: 3px; animation: confetti-fall linear forwards;
   }
 </style>
 </head>
@@ -270,7 +315,22 @@
   <div class="start-pokemon">⚡</div>
   <div class="start-title">ポケモンクイズ</div>
   <div class="start-subtitle">5さいから あそべるよ！</div>
-  <button class="start-btn" onclick="startQuiz()">はじめる！</button>
+  <div class="mode-buttons">
+    <button class="mode-btn mode-btn-pokemon" onclick="startQuiz('pokemon')">
+      <span class="mode-btn-icon">🎮</span>
+      <span class="mode-btn-text">
+        <span class="mode-btn-title">ポケモンクイズ</span>
+        <span class="mode-btn-desc">ポケモンの なまえを あてよう！</span>
+      </span>
+    </button>
+    <button class="mode-btn mode-btn-type" onclick="startQuiz('type')">
+      <span class="mode-btn-icon">⚔️</span>
+      <span class="mode-btn-text">
+        <span class="mode-btn-title">タイプあいしょう</span>
+        <span class="mode-btn-desc">どっちが つよい？ 2たく！</span>
+      </span>
+    </button>
+  </div>
 </div>
 
 <!-- ===== Quiz Screen ===== -->
@@ -284,7 +344,7 @@
   <div class="quiz-card" id="quiz-card">
     <div class="quiz-emoji" id="quiz-emoji"></div>
     <div class="quiz-question" id="quiz-question"></div>
-    <div class="choices" id="choices"></div>
+    <div id="choices-container"></div>
     <div class="feedback" id="feedback"></div>
   </div>
 </div>
@@ -298,104 +358,90 @@
     <div class="result-score" id="result-score"></div>
     <div class="result-label" id="result-label"></div>
     <div class="result-msg" id="result-msg"></div>
-    <button class="retry-btn" onclick="startQuiz()">もういちど！</button>
+    <div class="result-buttons">
+      <button class="retry-btn" id="retry-btn">もういちど！</button>
+      <button class="home-btn" onclick="goHome()">モードを えらぶ</button>
+    </div>
   </div>
 </div>
 
 <script>
-const allQuizzes = [
-  {
-    emoji: "⚡",
-    question: "きいろくて ほっぺが あかい\nでんきタイプの ポケモンは？",
-    choices: ["ピカチュウ", "ライチュウ", "エモンガ", "デデンネ"],
-    answer: 0
-  },
-  {
-    emoji: "🌱",
-    question: "せなかに たねがある\nくさタイプの ポケモンは？",
-    choices: ["チコリータ", "フシギダネ", "ナエトル", "キモリ"],
-    answer: 1
-  },
-  {
-    emoji: "🔥",
-    question: "しっぽに ひがついている\nほのおタイプの ポケモンは？",
-    choices: ["アチャモ", "ポカブ", "ヒトカゲ", "ヒノアラシ"],
-    answer: 2
-  },
-  {
-    emoji: "💧",
-    question: "カメの かたちをした\nみずタイプの ポケモンは？",
-    choices: ["カメックス", "ゼニガメ", "カメテテ", "ポッチャマ"],
-    answer: 1
-  },
-  {
-    emoji: "🎤",
-    question: "ピンクで まるくて\nうたうと ねむくなる ポケモンは？",
-    choices: ["ピッピ", "ププリン", "プリン", "ラッキー"],
-    answer: 2
-  },
-  {
-    emoji: "😴",
-    question: "とっても おおきくて\nいつも ねている ポケモンは？",
-    choices: ["ゴンベ", "ケッキング", "カビゴン", "ヤドン"],
-    answer: 2
-  },
-  {
-    emoji: "🐱",
-    question: "ロケットだんの\nにほんごを しゃべる ポケモンは？",
-    choices: ["ニャース", "ニャオハ", "エネコ", "ニャルマー"],
-    answer: 0
-  },
-  {
-    emoji: "🧢",
-    question: "ピカチュウの パートナーの\nおとこのこの なまえは？",
-    choices: ["タケシ", "ゴウ", "サトシ", "シゲル"],
-    answer: 2
-  },
-  {
-    emoji: "🩷",
-    question: "どんな ポケモンにも\nへんしんできる ポケモンは？",
-    choices: ["ミュウ", "メタモン", "ドーブル", "ゾロア"],
-    answer: 1
-  },
-  {
-    emoji: "🌟",
-    question: "ピカチュウが しんかすると\nなにに なる？",
-    choices: ["ピチュー", "エモンガ", "デデンネ", "ライチュウ"],
-    answer: 3
-  },
-  {
-    emoji: "🎈",
-    question: "そらを とぶ まるい\nピンクの ポケモンは？",
-    choices: ["プリン", "プクリン", "ピッピ", "ミュウ"],
-    answer: 3
-  },
-  {
-    emoji: "👻",
-    question: "したを べろっと だして\nおどかすのが すきな ポケモンは？",
-    choices: ["ムウマ", "ゲンガー", "ゴース", "ヨマワル"],
-    answer: 1
-  },
-  {
-    emoji: "🦋",
-    question: "キャタピーが さいごに\nしんかすると なにに なる？",
-    choices: ["モルフォン", "バタフリー", "アゲハント", "ビビヨン"],
-    answer: 1
-  },
-  {
-    emoji: "🏊",
-    question: "あかい からだの おおきな\nさかなの ポケモンは？",
-    choices: ["トサキント", "コイキング", "キングラー", "アズマオウ"],
-    answer: 1
-  },
-  {
-    emoji: "💪",
-    question: "4ほんの うでで\nかいりきの ポケモンは？",
-    choices: ["ゴーリキー", "カイリキー", "エビワラー", "ルカリオ"],
-    answer: 1
-  }
+/* ===== Pokemon Quiz Data ===== */
+const pokemonQuizzes = [
+  { emoji:"⚡", question:"きいろくて ほっぺが あかい\nでんきタイプの ポケモンは？", choices:["ピカチュウ","ライチュウ","エモンガ","デデンネ"], answer:0 },
+  { emoji:"🌱", question:"せなかに たねがある\nくさタイプの ポケモンは？", choices:["チコリータ","フシギダネ","ナエトル","キモリ"], answer:1 },
+  { emoji:"🔥", question:"しっぽに ひがついている\nほのおタイプの ポケモンは？", choices:["アチャモ","ポカブ","ヒトカゲ","ヒノアラシ"], answer:2 },
+  { emoji:"💧", question:"カメの かたちをした\nみずタイプの ポケモンは？", choices:["カメックス","ゼニガメ","カメテテ","ポッチャマ"], answer:1 },
+  { emoji:"🎤", question:"ピンクで まるくて\nうたうと ねむくなる ポケモンは？", choices:["ピッピ","ププリン","プリン","ラッキー"], answer:2 },
+  { emoji:"😴", question:"とっても おおきくて\nいつも ねている ポケモンは？", choices:["ゴンベ","ケッキング","カビゴン","ヤドン"], answer:2 },
+  { emoji:"🐱", question:"ロケットだんの\nにほんごを しゃべる ポケモンは？", choices:["ニャース","ニャオハ","エネコ","ニャルマー"], answer:0 },
+  { emoji:"🧢", question:"ピカチュウの パートナーの\nおとこのこの なまえは？", choices:["タケシ","ゴウ","サトシ","シゲル"], answer:2 },
+  { emoji:"🩷", question:"どんな ポケモンにも\nへんしんできる ポケモンは？", choices:["ミュウ","メタモン","ドーブル","ゾロア"], answer:1 },
+  { emoji:"🌟", question:"ピカチュウが しんかすると\nなにに なる？", choices:["ピチュー","エモンガ","デデンネ","ライチュウ"], answer:3 },
+  { emoji:"🎈", question:"そらを とぶ まるい\nピンクの ポケモンは？", choices:["プリン","プクリン","ピッピ","ミュウ"], answer:3 },
+  { emoji:"👻", question:"したを べろっと だして\nおどかすのが すきな ポケモンは？", choices:["ムウマ","ゲンガー","ゴース","ヨマワル"], answer:1 },
+  { emoji:"🦋", question:"キャタピーが さいごに\nしんかすると なにに なる？", choices:["モルフォン","バタフリー","アゲハント","ビビヨン"], answer:1 },
+  { emoji:"🏊", question:"あかい からだの おおきな\nさかなの ポケモンは？", choices:["トサキント","コイキング","キングラー","アズマオウ"], answer:1 },
+  { emoji:"💪", question:"4ほんの うでで\nかいりきの ポケモンは？", choices:["ゴーリキー","カイリキー","エビワラー","ルカリオ"], answer:1 },
 ];
 
+/* ===== Type Data ===== */
+const typeInfo = {
+  ほのお:  { icon: "🔥", color: "#FF6B35", bg: "#FFF0E8" },
+  みず:    { icon: "💧", color: "#4A90D9", bg: "#E8F4FD" },
+  くさ:    { icon: "🌿", color: "#5DB85D", bg: "#EDF7ED" },
+  でんき:  { icon: "⚡", color: "#F5C542", bg: "#FDF8E8" },
+  こおり:  { icon: "❄️", color: "#74C2E1", bg: "#EAF6FB" },
+  じめん:  { icon: "🏔️", color: "#B8860B", bg: "#F5F0E0" },
+  ひこう:  { icon: "🕊️", color: "#7EC8E3", bg: "#ECF6FB" },
+  いわ:    { icon: "🪨", color: "#8B7355", bg: "#F2EDE6" },
+  むし:    { icon: "🐛", color: "#8DB600", bg: "#F2F7E0" },
+  どく:    { icon: "☠️", color: "#9B59B6", bg: "#F3EAF7" },
+  かくとう: { icon: "🥊", color: "#C0392B", bg: "#FAEAE8" },
+  エスパー: { icon: "🔮", color: "#E84393", bg: "#FDE8F2" },
+  ゴースト: { icon: "👻", color: "#6C5CE7", bg: "#EDEBFA" },
+  ドラゴン: { icon: "🐉", color: "#6F42C1", bg: "#EEEBF7" },
+  はがね:  { icon: "🛡️", color: "#6D7587", bg: "#EDEEF1" },
+  フェアリー: { icon: "🧚", color: "#E685B5", bg: "#FCEEF5" },
+  ノーマル: { icon: "⭐", color: "#9E9E9E", bg: "#F2F2F2" },
+};
+
+/* winner beats loser (winner is super effective against loser) */
+const typeMatchups = [
+  { winner: "みず",     loser: "ほのお",   hint: "みずで ひを けすよ！" },
+  { winner: "ほのお",   loser: "くさ",     hint: "ひで くさが もえちゃう！" },
+  { winner: "くさ",     loser: "みず",     hint: "くさが みずを すいとるよ！" },
+  { winner: "みず",     loser: "じめん",   hint: "みずで つちが ながれるよ！" },
+  { winner: "でんき",   loser: "みず",     hint: "みずに でんきは ビリビリ！" },
+  { winner: "じめん",   loser: "でんき",   hint: "でんきは じめんに すいこまれる！" },
+  { winner: "ほのお",   loser: "こおり",   hint: "ひで こおりが とけちゃう！" },
+  { winner: "こおり",   loser: "くさ",     hint: "さむさで くさが こおるよ！" },
+  { winner: "ほのお",   loser: "むし",     hint: "ひで むしは にげちゃう！" },
+  { winner: "いわ",     loser: "ほのお",   hint: "いわで ひを おさえるよ！" },
+  { winner: "みず",     loser: "いわ",     hint: "みずで いわが けずれるよ！" },
+  { winner: "ひこう",   loser: "くさ",     hint: "そらから くさを こうげき！" },
+  { winner: "ひこう",   loser: "むし",     hint: "とりは むしを たべちゃう！" },
+  { winner: "いわ",     loser: "ひこう",   hint: "いわで とりを おとすよ！" },
+  { winner: "くさ",     loser: "じめん",   hint: "くさが じめんから はえるよ！" },
+  { winner: "こおり",   loser: "じめん",   hint: "じめんが こおって カチカチ！" },
+  { winner: "でんき",   loser: "ひこう",   hint: "かみなりで そらを こうげき！" },
+  { winner: "かくとう", loser: "ノーマル", hint: "かくとうは ノーマルに つよい！" },
+  { winner: "かくとう", loser: "こおり",   hint: "パンチで こおりを わるよ！" },
+  { winner: "かくとう", loser: "いわ",     hint: "パンチで いわを くだくよ！" },
+  { winner: "どく",     loser: "くさ",     hint: "どくで くさが かれちゃう！" },
+  { winner: "どく",     loser: "フェアリー", hint: "どくは フェアリーに つよい！" },
+  { winner: "エスパー", loser: "かくとう", hint: "ちからより あたまが かつ！" },
+  { winner: "エスパー", loser: "どく",     hint: "ねんりきで どくを たおす！" },
+  { winner: "ゴースト", loser: "エスパー", hint: "おばけは ねんりきが きかない！" },
+  { winner: "ドラゴン", loser: "ドラゴン", hint: "ドラゴンには ドラゴン！" },
+  { winner: "フェアリー", loser: "ドラゴン", hint: "フェアリーは ドラゴンに つよい！" },
+  { winner: "はがね",   loser: "こおり",   hint: "はがねで こおりを くだく！" },
+  { winner: "はがね",   loser: "フェアリー", hint: "はがねは フェアリーに つよい！" },
+  { winner: "ほのお",   loser: "はがね",   hint: "ひで はがねが とけちゃう！" },
+];
+
+/* ===== State ===== */
+let gameMode = 'pokemon';
 let quizzes = [];
 let current = 0;
 let score = 0;
@@ -416,49 +462,121 @@ function showScreen(id) {
   document.getElementById(id).classList.add('active');
 }
 
-function startQuiz() {
-  quizzes = shuffle(allQuizzes).slice(0, QUIZ_COUNT);
+function goHome() {
+  showScreen('screen-start');
+}
+
+/* ===== Build type quiz questions ===== */
+function buildTypeQuizzes() {
+  const picked = shuffle(typeMatchups).slice(0, QUIZ_COUNT);
+  return picked.map(m => {
+    const swap = Math.random() < 0.5;
+    const typeA = swap ? m.loser : m.winner;
+    const typeB = swap ? m.winner : m.loser;
+    return {
+      typeA, typeB,
+      answer: swap ? 1 : 0,
+      hint: m.hint
+    };
+  });
+}
+
+/* ===== Start ===== */
+function startQuiz(mode) {
+  gameMode = mode;
   current = 0;
   score = 0;
+
+  if (mode === 'pokemon') {
+    quizzes = shuffle(pokemonQuizzes).slice(0, QUIZ_COUNT);
+  } else {
+    quizzes = buildTypeQuizzes();
+  }
+
   showScreen('screen-quiz');
   showQuestion();
 }
 
+/* ===== Show Question ===== */
 function showQuestion() {
   answered = false;
-  const q = quizzes[current];
-  document.getElementById('quiz-emoji').textContent = q.emoji;
-  document.getElementById('quiz-question').textContent = q.question;
   document.getElementById('feedback').textContent = '';
   document.getElementById('feedback').className = 'feedback';
   document.getElementById('progress-fill').style.width = ((current) / QUIZ_COUNT * 100) + '%';
   document.getElementById('quiz-count').textContent = (current + 1) + ' / ' + QUIZ_COUNT;
 
-  // Re-create card animation
   const card = document.getElementById('quiz-card');
   card.style.animation = 'none';
-  card.offsetHeight; // reflow
+  card.offsetHeight;
   card.style.animation = 'bounceIn 0.5s ease';
 
-  const choicesDiv = document.getElementById('choices');
-  choicesDiv.innerHTML = '';
+  if (gameMode === 'pokemon') {
+    showPokemonQuestion();
+  } else {
+    showTypeQuestion();
+  }
+}
+
+function showPokemonQuestion() {
+  const q = quizzes[current];
+  document.getElementById('quiz-emoji').textContent = q.emoji;
+  document.getElementById('quiz-question').textContent = q.question;
+
+  const container = document.getElementById('choices-container');
+  container.innerHTML = '';
+  const div = document.createElement('div');
+  div.className = 'choices';
   q.choices.forEach((c, i) => {
     const btn = document.createElement('button');
     btn.className = 'choice-btn';
     btn.textContent = c;
-    btn.onclick = () => selectAnswer(i, btn);
-    choicesDiv.appendChild(btn);
+    btn.onclick = () => selectPokemonAnswer(i, btn);
+    div.appendChild(btn);
   });
+  container.appendChild(div);
 }
 
-function selectAnswer(idx, btn) {
+function showTypeQuestion() {
+  const q = quizzes[current];
+  const infoA = typeInfo[q.typeA];
+  const infoB = typeInfo[q.typeB];
+
+  document.getElementById('quiz-emoji').textContent = '⚔️';
+  document.getElementById('quiz-question').textContent = 'どっちが つよい？';
+
+  const container = document.getElementById('choices-container');
+  container.innerHTML = '';
+
+  const vs = document.createElement('div');
+  vs.className = 'vs-text';
+  vs.textContent = infoA.icon + ' VS ' + infoB.icon;
+  container.appendChild(vs);
+
+  const div = document.createElement('div');
+  div.className = 'type-choices';
+
+  [q.typeA, q.typeB].forEach((t, i) => {
+    const info = typeInfo[t];
+    const btn = document.createElement('button');
+    btn.className = 'type-btn';
+    btn.style.background = info.bg;
+    btn.style.color = info.color;
+    btn.innerHTML = '<span class="type-btn-icon">' + info.icon + '</span>' + t + 'タイプ';
+    btn.onclick = () => selectTypeAnswer(i, btn);
+    div.appendChild(btn);
+  });
+
+  container.appendChild(div);
+}
+
+/* ===== Answer Handlers ===== */
+function selectPokemonAnswer(idx, btn) {
   if (answered) return;
   answered = true;
 
   const q = quizzes[current];
   const buttons = document.querySelectorAll('.choice-btn');
   const fb = document.getElementById('feedback');
-
   buttons.forEach(b => b.disabled = true);
 
   if (idx === q.answer) {
@@ -469,25 +587,51 @@ function selectAnswer(idx, btn) {
   } else {
     btn.classList.add('wrong');
     buttons[q.answer].classList.add('correct');
-    fb.textContent = '❌ ざんねん… こたえは「' + q.choices[q.answer] + '」';
+    fb.textContent = '❌ こたえは「' + q.choices[q.answer] + '」';
     fb.className = 'feedback wrong-text';
   }
 
   document.getElementById('progress-fill').style.width = ((current + 1) / QUIZ_COUNT * 100) + '%';
-
-  setTimeout(() => {
-    current++;
-    if (current < QUIZ_COUNT) {
-      showQuestion();
-    } else {
-      showResult();
-    }
-  }, 1600);
+  setTimeout(nextQuestion, 1600);
 }
 
+function selectTypeAnswer(idx, btn) {
+  if (answered) return;
+  answered = true;
+
+  const q = quizzes[current];
+  const buttons = document.querySelectorAll('.type-btn');
+  const fb = document.getElementById('feedback');
+  buttons.forEach(b => b.disabled = true);
+
+  if (idx === q.answer) {
+    btn.classList.add('correct');
+    fb.textContent = '⭕ ' + q.hint;
+    fb.className = 'feedback correct-text';
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    buttons[q.answer].classList.add('correct');
+    fb.textContent = '❌ ' + q.hint;
+    fb.className = 'feedback wrong-text';
+  }
+
+  document.getElementById('progress-fill').style.width = ((current + 1) / QUIZ_COUNT * 100) + '%';
+  setTimeout(nextQuestion, 2000);
+}
+
+function nextQuestion() {
+  current++;
+  if (current < QUIZ_COUNT) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+/* ===== Result ===== */
 function showResult() {
   showScreen('screen-result');
-
   document.getElementById('result-score').textContent = score + ' / ' + QUIZ_COUNT;
 
   let emoji, label, msg;
@@ -504,6 +648,8 @@ function showResult() {
   document.getElementById('result-emoji').textContent = emoji;
   document.getElementById('result-label').textContent = label;
   document.getElementById('result-msg').textContent = msg;
+
+  document.getElementById('retry-btn').onclick = () => startQuiz(gameMode);
 
   if (score >= 5) spawnConfetti();
 }
